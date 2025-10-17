@@ -250,6 +250,7 @@ def main() -> int:
     stdio_wait_alerts = compute_stdio_wait_alerts(
         transport_meta or transport_metrics,
         args.stdio_wait_threshold_ms,
+        baseline_transports if baseline_transports else None,
     )
     baseline_alerts: List[Dict[str, object]] = []
     baseline_transports: Dict[str, Dict[str, object]] = {}

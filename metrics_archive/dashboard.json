@@ -6,6 +6,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": 1.673482748810784,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -14,6 +16,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": 14.783332297520246,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -22,6 +26,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": 16.86355189922324,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -30,6 +36,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": 40.26552064569836,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -38,6 +46,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": -1.7390255481586792,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -46,6 +56,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": 5.4868765953870025,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -54,6 +66,28 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": 7.6715243005310185,
+      "delta_success": 0.0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-181450-transport_metrics",
+      "latency_p95": 408.6203562485025,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "delta_latency_p95": 9.858635047567077,
+      "delta_success": 0.0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-181511-transport_metrics",
+      "latency_p95": 401.8156734000513,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "delta_latency_p95": 3.0539521991158836,
+      "delta_success": 0.0,
       "alerts": []
     }
   ],
@@ -64,6 +98,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": -14.462437351903645,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -72,6 +108,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": -1.8472373518306995,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -80,6 +118,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": 8.775926752059604,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -88,6 +128,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": -10.103312647697749,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -96,6 +138,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": -17.362196050817147,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -104,6 +148,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": 3.1696482485131128,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -112,6 +158,28 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": 1.538352598072379,
+      "delta_success": 0.0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-181450-transport_metrics",
+      "latency_p95": 414.6730188967922,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "delta_latency_p95": -6.2979434533190215,
+      "delta_success": 0.0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-181511-transport_metrics",
+      "latency_p95": 420.1098543493572,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "delta_latency_p95": -0.8611080007540295,
+      "delta_success": 0.0,
       "alerts": []
     }
   ],
@@ -122,6 +190,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": 6.273747949671815,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -130,6 +200,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0,
       "concurrency": 0,
+      "delta_latency_p95": 19.62870365168783,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -138,6 +210,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0019170038285665214,
       "concurrency": 2,
+      "delta_latency_p95": 6.313679497907287,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -146,6 +220,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0015830009942874312,
       "concurrency": 2,
+      "delta_latency_p95": -3.3336265965772327,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -154,6 +230,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.0017500060494057834,
       "concurrency": 2,
+      "delta_latency_p95": 12.134260748280212,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -162,6 +240,8 @@
       "success_rate": 1.0,
       "wait_p95": 0.002125001628883183,
       "concurrency": 2,
+      "delta_latency_p95": -28.019085598862148,
+      "delta_success": 0.0,
       "alerts": []
     },
     {
@@ -170,6 +250,28 @@
       "success_rate": 1.0,
       "wait_p95": 0.004707995685748756,
       "concurrency": 2,
+      "delta_latency_p95": 17.777881553411135,
+      "delta_success": 0.0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-181450-transport_metrics",
+      "latency_p95": 407.52826670141076,
+      "success_rate": 1.0,
+      "wait_p95": 0.0017080019460991025,
+      "concurrency": 2,
+      "delta_latency_p95": 9.309168600884732,
+      "delta_success": 0.0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-181511-transport_metrics",
+      "latency_p95": 397.28620814858004,
+      "success_rate": 1.0,
+      "wait_p95": 0.0022090025595389307,
+      "concurrency": 2,
+      "delta_latency_p95": -0.932889951945981,
+      "delta_success": 0.0,
       "alerts": []
     }
   ]
