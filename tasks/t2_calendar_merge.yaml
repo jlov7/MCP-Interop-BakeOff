@@ -1,0 +1,12 @@
+id: t2_calendar_merge
+name: Calendar Merge
+description: >
+  Merge a proposed event list into tasks/calendar.json. The agent must request approval
+  before writing the merged file artifact.
+runner_prompt: |
+  Load the existing calendar from tasks/calendar.json, evaluate proposed events, and
+  output a JSON merge plan with {"accepted": [event], "skipped": [event], "explanation": str}.
+  Do not modify files without explicit approval.
+approval: by_tool
+expected_artifact: null
+mode: write

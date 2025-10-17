@@ -1,0 +1,11 @@
+id: t4_code_patch
+name: Code Patch
+description: >
+  Apply a minimal code patch to the sample module and run unit tests via the sandboxed
+  code_exec tool.
+runner_prompt: |
+  Update tasks/code_module/example.py to add a `multiply(a, b)` helper that mirrors the
+  behaviour of `add`, then use the code_exec tool with the pytest command to run tests.
+approval: by_tool
+expected_artifact: null
+mode: write

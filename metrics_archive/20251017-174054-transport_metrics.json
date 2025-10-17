@@ -1,0 +1,92 @@
+{
+  "threshold_ms": 500.0,
+  "success_threshold": 0.75,
+  "transports": {
+    "embedded": {
+      "portability_success_rate": 1.0,
+      "trace_completeness": 1.0,
+      "latency_p50": 0.5950835002295207,
+      "latency_p95": 400.4352039497462,
+      "approvals": 9,
+      "token_total": 192,
+      "failure_histogram": {},
+      "tool_latency_p50": {
+        "fs_read": 0.1643959985813126,
+        "calendar_merge": 0.13641699479194358,
+        "http_fetch": 0.048082998546306044,
+        "code_exec": 397.96274999389425
+      },
+      "tool_latency_p95": {
+        "fs_read": 0.2405126517260214,
+        "calendar_merge": 0.14545479498337954,
+        "http_fetch": 0.05967139877611771,
+        "code_exec": 402.4122005997924
+      },
+      "tool_latency_count": {
+        "fs_read": 12,
+        "calendar_merge": 3,
+        "http_fetch": 3,
+        "code_exec": 3
+      }
+    },
+    "http": {
+      "portability_success_rate": 1.0,
+      "trace_completeness": 1.0,
+      "latency_p50": 34.73622949968558,
+      "latency_p95": 406.5085249982076,
+      "approvals": 9,
+      "token_total": 192,
+      "failure_histogram": {},
+      "tool_latency_p50": {
+        "fs_read": 13.381041499087587,
+        "calendar_merge": 12.802000004739966,
+        "http_fetch": 15.069790999405086,
+        "code_exec": 401.155874998949
+      },
+      "tool_latency_p95": {
+        "fs_read": 15.292658699763704,
+        "calendar_merge": 15.710274402954383,
+        "http_fetch": 15.181504402426071,
+        "code_exec": 411.42558780047693
+      },
+      "tool_latency_count": {
+        "fs_read": 12,
+        "calendar_merge": 3,
+        "http_fetch": 3,
+        "code_exec": 3
+      }
+    },
+    "stdio": {
+      "portability_success_rate": 1.0,
+      "trace_completeness": 1.0,
+      "latency_p50": 1.5081459969223943,
+      "latency_p95": 404.49284605019784,
+      "approvals": 9,
+      "token_total": 192,
+      "failure_histogram": {},
+      "tool_latency_p50": {
+        "fs_read": 0.45272900024428964,
+        "calendar_merge": 0.25637500220909715,
+        "http_fetch": 0.1937909983098507,
+        "code_exec": 403.1274580047466
+      },
+      "tool_latency_p95": {
+        "fs_read": 120.91618749873287,
+        "calendar_merge": 0.3068128033191897,
+        "http_fetch": 0.2229671983513981,
+        "code_exec": 405.35818360440317
+      },
+      "tool_latency_count": {
+        "fs_read": 12,
+        "calendar_merge": 3,
+        "http_fetch": 3,
+        "code_exec": 3
+      }
+    }
+  },
+  "alerts": {
+    "latency": [],
+    "success": [],
+    "baseline": []
+  }
+}

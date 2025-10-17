@@ -1,0 +1,14 @@
+{
+  "events": [
+    {
+      "title": "Design Sync",
+      "time": "2024-07-01T15:00:00Z",
+      "duration_minutes": 30
+    },
+    {
+      "title": "Retro",
+      "time": "2024-07-02T17:00:00Z",
+      "duration_minutes": 45
+    }
+  ]
+}

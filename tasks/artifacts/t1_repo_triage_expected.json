@@ -1,0 +1,12 @@
+{
+  "summary": "usb-agents coordinates MCP portability evaluation across three runtimes.",
+  "components": [
+    "Common MCP server",
+    "Deterministic task specs",
+    "Runner harness for OpenAI, Microsoft, and Mistral"
+  ],
+  "risks": [
+    "Preview SDK compatibility drift",
+    "Telemetry exporter configuration errors"
+  ]
+}

@@ -1,0 +1,30 @@
+# python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.python-version
+.venv/
+
+# tooling
+uv.lock
+.idea/
+.vscode/
+.DS_Store
+
+# project artifacts
+traces/
+results.csv
+results.md
+transport_metrics.json
+embedded_metrics.json
+baseline_metrics.json
+alerts_summary.md
+*.otlp
+*.ndjson
+tasks/artifacts/*.actual.json
+.env

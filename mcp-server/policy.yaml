@@ -1,0 +1,6 @@
+default: by_tool
+tools:
+  fs_read: never
+  http_fetch: by_tool
+  calendar_merge: by_tool
+  code_exec: by_tool

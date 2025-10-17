@@ -1,0 +1,11 @@
+id: t3_http_etl
+name: HTTP ETL
+description: >
+  Fetch JSON from the allowlisted synthetic dataset and transform it into a compact CSV
+  summary. Exercise HTTP tooling and artifact production.
+runner_prompt: |
+  Fetch https://example.com/synthetic-dataset via the http_fetch tool, compute a CSV with
+  columns id,name,role, and return JSON {"artifact_path": "tasks/artifacts/http_etl.csv"}.
+approval: by_tool
+expected_artifact: tasks/artifacts/http_etl.csv
+mode: read_write

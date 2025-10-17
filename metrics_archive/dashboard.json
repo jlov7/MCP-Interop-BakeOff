@@ -1,0 +1,176 @@
+{
+  "embedded": [
+    {
+      "run": "20251017-174054-transport_metrics",
+      "latency_p95": 400.4352039497462,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-174129-transport_metrics",
+      "latency_p95": 413.5450534984557,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-174904-transport_metrics",
+      "latency_p95": 415.62527310015867,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-175952-transport_metrics",
+      "latency_p95": 439.0272418466338,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-180115-transport_metrics",
+      "latency_p95": 397.02269565277675,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-180305-transport_metrics",
+      "latency_p95": 404.24859779632243,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-180835-transport_metrics",
+      "latency_p95": 406.43324550146644,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    }
+  ],
+  "http": [
+    {
+      "run": "20251017-174054-transport_metrics",
+      "latency_p95": 406.5085249982076,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-174129-transport_metrics",
+      "latency_p95": 419.1237249982805,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-174904-transport_metrics",
+      "latency_p95": 429.7468891021708,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-175952-transport_metrics",
+      "latency_p95": 410.8676497024135,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-180115-transport_metrics",
+      "latency_p95": 403.6087662992941,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-180305-transport_metrics",
+      "latency_p95": 424.14061059862433,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-180835-transport_metrics",
+      "latency_p95": 422.5093149481836,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    }
+  ],
+  "stdio": [
+    {
+      "run": "20251017-174054-transport_metrics",
+      "latency_p95": 404.49284605019784,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-174129-transport_metrics",
+      "latency_p95": 417.84780175221385,
+      "success_rate": 1.0,
+      "wait_p95": 0.0,
+      "concurrency": 0,
+      "alerts": []
+    },
+    {
+      "run": "20251017-174904-transport_metrics",
+      "latency_p95": 404.5327775984333,
+      "success_rate": 1.0,
+      "wait_p95": 0.0019170038285665214,
+      "concurrency": 2,
+      "alerts": []
+    },
+    {
+      "run": "20251017-175952-transport_metrics",
+      "latency_p95": 394.8854715039488,
+      "success_rate": 1.0,
+      "wait_p95": 0.0015830009942874312,
+      "concurrency": 2,
+      "alerts": []
+    },
+    {
+      "run": "20251017-180115-transport_metrics",
+      "latency_p95": 410.35335884880624,
+      "success_rate": 1.0,
+      "wait_p95": 0.0017500060494057834,
+      "concurrency": 2,
+      "alerts": []
+    },
+    {
+      "run": "20251017-180305-transport_metrics",
+      "latency_p95": 370.2000125016639,
+      "success_rate": 1.0,
+      "wait_p95": 0.002125001628883183,
+      "concurrency": 2,
+      "alerts": []
+    },
+    {
+      "run": "20251017-180835-transport_metrics",
+      "latency_p95": 415.99697965393716,
+      "success_rate": 1.0,
+      "wait_p95": 0.004707995685748756,
+      "concurrency": 2,
+      "alerts": []
+    }
+  ]
+}
