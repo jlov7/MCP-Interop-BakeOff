@@ -98,7 +98,8 @@ Companion scripts:
 
 1. Run `scripts/run_matrix.py` with thresholds, baselines, alerts output, and archive dir (see quickstart example).
 2. Regenerate dashboards and reports (run `dashboard.py` / `report.py` if you skip the built-in archive refresh).
-3. Upload artefacts: `results.csv`, `results.md`, `transport_metrics.json`, `alerts_summary.md`, `metrics_archive/*`, and optionally `traces/*.ndjson`.
+3. Upload artefacts: `results.csv`, `results.md`, `transport_metrics.json`, `alerts_summary.md`, `metrics_archive/*` (dashboards + historical metrics), and optionally `traces/*.ndjson`.
+4. Optionally push `metrics_archive/dashboard.json` to your analytics store or surface `alerts_summary.md` in pull requests for quick triage.
 4. Fail the pipeline on non-zero exit or inspect `alerts_summary.md` for triage.
 
 ## Repository Structure (abridged)

@@ -247,13 +247,8 @@ def main() -> int:
     if args.transport_json and args.transport_json.exists():
         payload = json.loads(args.transport_json.read_text(encoding="utf-8"))
         transport_meta = payload.get("transports", payload)
-    stdio_wait_alerts = compute_stdio_wait_alerts(
-        transport_meta or transport_metrics,
-        args.stdio_wait_threshold_ms,
-        baseline_transports if baseline_transports else None,
-    )
     baseline_alerts: List[Dict[str, object]] = []
-    baseline_transports: Dict[str, Dict[str, object]] = {}
+    baseline_transports: Optional[Dict[str, Dict[str, object]]] = None
     if args.baseline and args.baseline.exists():
         baseline_data = json.loads(args.baseline.read_text(encoding="utf-8"))
         baseline_transports = baseline_data.get("transports", baseline_data)
@@ -263,6 +258,11 @@ def main() -> int:
             args.max_latency_delta,
             args.max_success_delta,
         )
+    stdio_wait_alerts = compute_stdio_wait_alerts(
+        transport_meta or transport_metrics,
+        args.stdio_wait_threshold_ms,
+        baseline_transports,
+    )
     markdown = render_markdown(
         normalised,
         metrics,
@@ -271,7 +271,7 @@ def main() -> int:
         baseline_alerts,
         transport_meta,
         stdio_wait_alerts,
-        baseline_transports or None,
+        baseline_transports,
     )
     args.output.write_text(markdown, encoding="utf-8")
     return 0
