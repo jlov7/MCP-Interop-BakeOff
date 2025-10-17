@@ -64,6 +64,29 @@ tasks/ ─▶ runners/ ─▶ scripts/run_matrix.py
    - `metrics_archive/`: timestamped payloads + auto-refreshed `dashboard.md` / `dashboard.json`.
    - `traces/*.ndjson`: OTLP spans (useful for local inspection if no collector).
 
+## Environment Configuration
+
+- Copy `.env.template` to `.env` and fill in runtime credentials (`OPENAI_API_KEY`, `MS_AGENT_KEY`, `MISTRAL_API_KEY`). Use dedicated sandbox keys; the harness never persists them.
+- Export the same variables in your shell (or `source .env`) before invoking runners. A quick smoke test is:
+  ```bash
+  uv run python - <<'PY'
+  import os
+  for name in ["OPENAI_API_KEY", "MS_AGENT_KEY", "MISTRAL_API_KEY"]:
+      assert os.getenv(name), f"Missing {name}"
+  print("Runtime secrets loaded")
+  PY
+  ```
+- For HTTP transport runs, confirm `MCP_SERVER_HOST`/`PORT` are reachable from the client machine. When running locally you can rely on the defaults (`127.0.0.1:8000`); in remote CI ensure firewalls allow inbound traffic.
+- The stdio transport uses `MCP_SERVER_STDIO_CMD`; update it if you relocate the repository or want to wrap the server with additional tooling.
+- OTLP telemetry is optional. If you do not run a collector, either clear `OTEL_EXPORTER_OTLP_ENDPOINT` or point it at a local no-op receiver to avoid connection noise.
+
+## HTTP Transport Tips
+
+- `scripts/run_matrix.py` will auto-spawn the HTTP server when you pass `--transports http` (or the default transport is http). Explicitly set `--spawn-server=false` if you already have a server running elsewhere.
+- To preload or debug the server manually, run `uv run python -m mcp_server.server --transport http --host 0.0.0.0 --port 8000` and watch for `INFO:     Application startup complete`.
+- When the matrix script spawns the server, it polls `GET /health`. If you customise the policy path or ports, keep the environment variables in sync so health checks succeed.
+- Granting approvals over HTTP still honours policy enforcement. Ensure agents can surface the approval prompt; missing `approval` payloads will lead to `400` errors returned by the server.
+
 ## CLI Highlights
 
 | Flag | Purpose |
@@ -81,6 +104,14 @@ Companion scripts:
 - `scripts/report.py` – regenerate Markdown reports from `results.csv`/`transport_metrics.json` (supports the same thresholds/baseline options).
 - `scripts/dashboard.py` – summarise archived runs into Markdown/JSON dashboards (accepts `--baseline` for delta columns).
 - `scripts/trace_summary.py` – quick sanity check for OTLP spans.
+
+## Extending the Harness
+
+- Create a new task under `tasks/` (`t5_new_task.yaml`) with an accompanying entry in `tasks/artifacts/` if you expect deterministic outputs. Follow the schema used in existing YAML files.
+- Update runners in `usb_agents/runner_base.py` (and subclasses if behaviour diverges) to plan the new tool calls and capture approvals. Store any artefacts beneath `tasks/artifacts/` to keep CI write access deterministic.
+- If the task exercises a new tool, wire the approval mode into `mcp-server/policy.yaml` and extend the tool implementation in `mcp_server/server.py`.
+- Add regression coverage in `tests/`—prefer unit tests that simulate the new behaviour (e.g. metrics, telemetry, or approval flows) to keep runtime short.
+- Finally, refresh baselines by running `scripts/run_matrix.py ... --update-baseline` once the new task is stable so dashboards and alerts include it.
 
 ## Telemetry & Alerts
 
