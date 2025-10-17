@@ -144,6 +144,11 @@ def parse_args() -> argparse.Namespace:
         help="JSON file to write aggregated dashboard (defaults to archive dir/dashboard.json).",
     )
     parser.add_argument(
+        "--skip-dashboard",
+        action="store_true",
+        help="Skip dashboard generation even when --archive-dir is provided.",
+    )
+    parser.add_argument(
         "--transport",
         choices=["embedded", "http", "stdio"],
         default=os.getenv("USB_AGENTS_TRANSPORT", "embedded"),
@@ -412,6 +417,7 @@ def main() -> int:
     stdio_wait_alerts = compute_stdio_wait_alerts(
         transports_dict,
         args.stdio_wait_threshold_ms,
+        baseline_transports if baseline_transports else None,
     )
 
     transports_dict = {name: bundle_to_dict(bundle) for name, bundle in transport_metrics.items()}
@@ -481,13 +487,15 @@ def main() -> int:
         timestamp = datetime.now(UTC).strftime("%Y%m%d-%H%M%S")
         archive_path = archive_dir / f"{timestamp}-transport_metrics.json"
         archive_path.write_text(json.dumps(transport_payload, indent=2), encoding="utf-8")
-        summary = build_dashboard_summary(archive_dir)
-        dashboard_md = render_dashboard_markdown(summary)
-        dashboard_json = build_dashboard_json(summary)
-        md_path = args.dashboard_output or (archive_dir / "dashboard.md")
-        json_path = args.dashboard_json or (archive_dir / "dashboard.json")
-        md_path.write_text(dashboard_md + "\n", encoding="utf-8")
-        json_path.write_text(json.dumps(dashboard_json, indent=2), encoding="utf-8")
+        if not args.skip_dashboard:
+            summary = build_dashboard_summary(archive_dir)
+            baseline_for_dashboard = baseline_transports if baseline_transports else None
+            dashboard_md = render_dashboard_markdown(summary, baseline_for_dashboard)
+            dashboard_json = build_dashboard_json(summary, baseline_for_dashboard)
+            md_path = args.dashboard_output or (archive_dir / "dashboard.md")
+            json_path = args.dashboard_json or (archive_dir / "dashboard.json")
+            md_path.write_text(dashboard_md + "\n", encoding="utf-8")
+            json_path.write_text(json.dumps(dashboard_json, indent=2), encoding="utf-8")
     if args.update_baseline and baseline_path:
         if any_alerts:
             sys.stderr.write("Skipping baseline update due to active alerts.\n")

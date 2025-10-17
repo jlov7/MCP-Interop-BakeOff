@@ -6,7 +6,7 @@ import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from statistics import median
-from typing import Any, Dict, Iterable, List
+from typing import Any, Dict, Iterable, List, Optional
 
 
 @dataclass
@@ -153,7 +153,9 @@ def compute_success_alerts(results: List[Dict], threshold: float) -> List[Dict[s
 
 
 def compute_stdio_wait_alerts(
-    transports: Dict[str, Dict[str, Any]], threshold_ms: float
+    transports: Dict[str, Dict[str, Any]],
+    threshold_ms: float,
+    baseline: Optional[Dict[str, Dict[str, Any]]] = None,
 ) -> List[Dict[str, float | str]]:
     alerts: List[Dict[str, float | str]] = []
     for transport, metrics in transports.items():
@@ -164,14 +166,21 @@ def compute_stdio_wait_alerts(
         p95 = wait_stats.get("p95")
         if p95 is None:
             continue
-        if p95 > threshold_ms:
-            alerts.append(
-                {
-                    "transport": transport,
-                    "wait_p95": p95,
-                    "threshold_ms": threshold_ms,
-                }
-            )
+        delta = None
+        if baseline and transport in baseline:
+            base_pool = baseline[transport].get("stdio_pool", {})
+            base_wait = base_pool.get("wait_ms", {}).get("p95")
+            if base_wait is not None:
+                delta = p95 - base_wait
+        if p95 > threshold_ms or (delta is not None and delta > 0):
+            alert: Dict[str, float | str] = {
+                "transport": transport,
+                "wait_p95": p95,
+                "threshold_ms": threshold_ms,
+            }
+            if delta is not None:
+                alert["delta_wait_p95"] = delta
+            alerts.append(alert)
     return alerts
 
 

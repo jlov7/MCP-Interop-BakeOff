@@ -140,7 +140,19 @@ def test_compute_stdio_wait_alerts():
             }
         }
     }
-    alerts = compute_stdio_wait_alerts(transports, threshold_ms=100.0)
+    baseline = {
+        "stdio": {
+            "stdio_pool": {
+                "wait_ms": {"p95": 110.0}
+            }
+        }
+    }
+    alerts = compute_stdio_wait_alerts(transports, threshold_ms=100.0, baseline=baseline)
     assert alerts == [
-        {"transport": "stdio", "wait_p95": 120.0, "threshold_ms": 100.0}
+        {
+            "transport": "stdio",
+            "wait_p95": 120.0,
+            "threshold_ms": 100.0,
+            "delta_wait_p95": 10.0,
+        }
     ]
