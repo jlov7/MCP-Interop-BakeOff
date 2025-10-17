@@ -1,0 +1,12 @@
+id: t1_repo_triage
+name: Repository Triage
+description: >
+  Inspect core repository files and produce a structured JSON summary that captures
+  notable components and potential risks. This task exercises read-only tooling.
+runner_prompt: |
+  You are assisting with a repository triage. Read the allowlisted files, summarise the
+  project purpose, list key services, and note any obvious risks. Return JSON with fields
+  {"summary": str, "components": [str], "risks": [str]}.
+approval: never
+expected_artifact: tasks/artifacts/t1_repo_triage_expected.json
+mode: read

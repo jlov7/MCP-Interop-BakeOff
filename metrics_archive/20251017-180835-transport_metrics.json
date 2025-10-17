@@ -1,0 +1,118 @@
+{
+  "threshold_ms": 500.0,
+  "success_threshold": 0.75,
+  "stdio_wait_threshold_ms": 20.0,
+  "transports": {
+    "embedded": {
+      "portability_success_rate": 1.0,
+      "trace_completeness": 1.0,
+      "latency_p50": 0.5166874980204739,
+      "latency_p95": 406.43324550146644,
+      "approvals": 9,
+      "token_total": 192,
+      "failure_histogram": {},
+      "tool_latency_p50": {
+        "fs_read": 0.13820849926560186,
+        "calendar_merge": 0.12620799680007622,
+        "http_fetch": 0.04745799378724769,
+        "code_exec": 406.07537500181934
+      },
+      "tool_latency_p95": {
+        "fs_read": 0.2237565477116732,
+        "calendar_merge": 0.14469579691649415,
+        "http_fetch": 0.04899520208709873,
+        "code_exec": 406.3247128047806
+      },
+      "tool_latency_count": {
+        "fs_read": 12,
+        "calendar_merge": 3,
+        "http_fetch": 3,
+        "code_exec": 3
+      }
+    },
+    "http": {
+      "portability_success_rate": 1.0,
+      "trace_completeness": 1.0,
+      "latency_p50": 34.758707999571925,
+      "latency_p95": 422.5093149481836,
+      "approvals": 9,
+      "token_total": 192,
+      "failure_histogram": {},
+      "tool_latency_p50": {
+        "fs_read": 13.57522949911072,
+        "calendar_merge": 13.32616700528888,
+        "http_fetch": 13.436832996376324,
+        "code_exec": 419.6782919971156
+      },
+      "tool_latency_p95": {
+        "fs_read": 16.3038126524043,
+        "calendar_merge": 13.614991404028842,
+        "http_fetch": 14.798233300098218,
+        "code_exec": 424.90095419998397
+      },
+      "tool_latency_count": {
+        "fs_read": 12,
+        "calendar_merge": 3,
+        "http_fetch": 3,
+        "code_exec": 3
+      }
+    },
+    "stdio": {
+      "portability_success_rate": 1.0,
+      "trace_completeness": 1.0,
+      "latency_p50": 1.5426665013364982,
+      "latency_p95": 415.99697965393716,
+      "approvals": 9,
+      "token_total": 192,
+      "failure_histogram": {},
+      "tool_latency_p50": {
+        "fs_read": 0.4060419996676501,
+        "calendar_merge": 0.26366700330981985,
+        "http_fetch": 0.23024999973131344,
+        "code_exec": 413.5649590025423
+      },
+      "tool_latency_p95": {
+        "fs_read": 121.92601220340275,
+        "calendar_merge": 0.39836640062276274,
+        "http_fetch": 0.2631756018672604,
+        "code_exec": 418.00597030232893
+      },
+      "tool_latency_count": {
+        "fs_read": 12,
+        "calendar_merge": 3,
+        "http_fetch": 3,
+        "code_exec": 3
+      },
+      "stdio_pool": {
+        "concurrency": 2,
+        "wait_ms": {
+          "count": 21,
+          "avg": 0.0011825731711550837,
+          "p50": 0.0005410038284026086,
+          "p95": 0.004707995685748756,
+          "max": 0.008166003681253642
+        },
+        "active_workers": {
+          "count": 21,
+          "avg": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "max": 1.0
+        },
+        "available_workers": {
+          "count": 42,
+          "avg": 1.5,
+          "p50": 1.5,
+          "p95": 2.0,
+          "max": 2.0
+        }
+      }
+    }
+  },
+  "alerts": {
+    "latency": [],
+    "success": [],
+    "baseline": [],
+    "stdio_wait": []
+  }
+}

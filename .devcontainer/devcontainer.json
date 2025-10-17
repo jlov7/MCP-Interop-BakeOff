@@ -1,0 +1,27 @@
+{
+  "name": "usb-agents",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "installJupyterlab": "false",
+      "version": "3.11"
+    }
+  },
+  "postCreateCommand": "pip install uv && uv sync",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  "mounts": [
+    "source=${localWorkspaceFolder}/traces,target=/workspaces/usb-agents/traces,type=bind,consistency=cached"
+  ],
+  "remoteEnv": {
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "http://otel-collector:4317"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "transport": "Transport or connectivity failures",
+  "schema": "Schema validation issues",
+  "approval": "Approval denied or missing",
+  "timeout": "Timeout executing tool or model",
+  "tool-desc": "Tool description or planning mismatch",
+  "guardrail": "Guardrail or safety filter triggered",
+  "runtime": "Unhandled runtime exception"
+}
