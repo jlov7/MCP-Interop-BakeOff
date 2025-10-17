@@ -9,6 +9,14 @@ from statistics import median
 from typing import Any, Dict, Iterable, List, Optional
 
 
+PORTABILITY_TASKS = {
+    "t1_repo_triage",
+    "t2_calendar_merge",
+    "t3_http_etl",
+    "t4_code_patch",
+}
+
+
 @dataclass
 class MetricsBundle:
     portability_success_rate: float
@@ -28,7 +36,7 @@ def load_results(path: Path) -> List[Dict]:
 
 
 def compute_portability(results: Iterable[Dict]) -> float:
-    relevant = [row for row in results if row["task_id"] in {"t1_repo_triage", "t2_calendar_merge", "t3_http_etl"}]
+    relevant = [row for row in results if row.get("task_id") in PORTABILITY_TASKS]
     if not relevant:
         return 0.0
     success = sum(1 for row in relevant if row["success"])

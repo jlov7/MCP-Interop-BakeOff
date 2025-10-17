@@ -4,15 +4,16 @@ from eval.metrics import (
     compare_to_baseline,
     compute_latency_alerts,
     compute_metrics_by_transport,
+    compute_portability,
     compute_success_alerts,
     compute_stdio_wait_alerts,
 )
 
 
-def make_row(transport: str, latency: float, success: bool = True) -> dict:
+def make_row(transport: str, latency: float, success: bool = True, task_id: str = "t1_repo_triage") -> dict:
     return {
         "runtime": f"runtime_{transport}",
-        "task_id": "t1",
+        "task_id": task_id,
         "policy_mode": "never",
         "success": success,
         "latency_ms": latency,
@@ -156,3 +157,40 @@ def test_compute_stdio_wait_alerts():
             "delta_wait_p95": 10.0,
         }
     ]
+
+
+def test_compute_stdio_wait_alerts_triggers_on_regression_without_threshold_breach():
+    transports = {
+        "stdio": {
+            "stdio_pool": {
+                "wait_ms": {"p95": 80.0}
+            }
+        }
+    }
+    baseline = {
+        "stdio": {
+            "stdio_pool": {
+                "wait_ms": {"p95": 60.0}
+            }
+        }
+    }
+    alerts = compute_stdio_wait_alerts(transports, threshold_ms=100.0, baseline=baseline)
+    assert alerts == [
+        {
+            "transport": "stdio",
+            "wait_p95": 80.0,
+            "threshold_ms": 100.0,
+            "delta_wait_p95": 20.0,
+        }
+    ]
+
+
+def test_compute_portability_includes_write_task():
+    results = [
+        make_row("embedded", 10.0, success=True, task_id="t1_repo_triage"),
+        make_row("embedded", 12.0, success=True, task_id="t2_calendar_merge"),
+        make_row("embedded", 14.0, success=True, task_id="t3_http_etl"),
+        make_row("embedded", 16.0, success=False, task_id="t4_code_patch"),
+    ]
+    portability = compute_portability(results)
+    assert portability == 0.75

@@ -400,6 +400,10 @@ def main() -> int:
                 shared_loop.close()
 
     transport_metrics = compute_metrics_by_transport(normalised)
+    transports_dict = {name: bundle_to_dict(bundle) for name, bundle in transport_metrics.items()}
+    for transport, extras in transport_extras.items():
+        transports_dict.setdefault(transport, {}).update(extras)
+
     latency_alerts = compute_latency_alerts(transport_metrics, args.latency_threshold_ms)
     success_alerts = compute_success_alerts(normalised, args.success_threshold)
     baseline_alerts: List[Dict[str, object]] = []
@@ -414,17 +418,12 @@ def main() -> int:
             args.max_latency_delta,
             args.max_success_delta,
         )
+
     stdio_wait_alerts = compute_stdio_wait_alerts(
         transports_dict,
         args.stdio_wait_threshold_ms,
         baseline_transports if baseline_transports else None,
     )
-
-    transports_dict = {name: bundle_to_dict(bundle) for name, bundle in transport_metrics.items()}
-    for transport, extras in transport_extras.items():
-        transports_dict.setdefault(transport, {}).update(extras)
-
-    stdio_wait_alerts = compute_stdio_wait_alerts(transports_dict, args.stdio_wait_threshold_ms)
     combined_alerts = {
         "latency": latency_alerts,
         "success": success_alerts,
