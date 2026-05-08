@@ -11,13 +11,16 @@ import signal
 import subprocess
 import sys
 import time
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Type
 
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
 
 import httpx
 import jsonschema
@@ -27,10 +30,10 @@ from eval.metrics import (
     bundle_to_dict,
     compare_to_baseline,
     compute_latency_alerts,
-    compute_success_alerts,
-    compute_stdio_wait_alerts,
     compute_metrics,
     compute_metrics_by_transport,
+    compute_stdio_wait_alerts,
+    compute_success_alerts,
 )
 from runners.mistral_runner import MistralRunner
 from runners.ms_runner import MicrosoftRunner
@@ -41,8 +44,8 @@ from scripts.dashboard import render_markdown as render_dashboard_markdown
 from scripts.report import render_markdown
 from usb_agents.policy import load_policy
 from usb_agents.runner_base import RunResult
-from usb_agents.tool_client import StdioToolClient, ToolClient
 from usb_agents.tasks import load_tasks
+from usb_agents.tool_client import StdioToolClient, ToolClient
 
 RUNNERS: List[Type] = [OpenAIRunner, MicrosoftRunner, MistralRunner]
 
@@ -152,7 +155,10 @@ def parse_args() -> argparse.Namespace:
         "--transport",
         choices=["embedded", "http", "stdio"],
         default=os.getenv("USB_AGENTS_TRANSPORT", "embedded"),
-        help="Transport mode for runners (embedded=direct call, http=REST MCP server, stdio placeholder).",
+        help=(
+            "Transport mode for runners "
+            "(embedded=direct call, http=REST MCP server, stdio placeholder)."
+        ),
     )
     parser.add_argument(
         "--http-url",
@@ -247,7 +253,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--update-baseline",
         action="store_true",
-        help="When provided with --baseline, overwrite the baseline file if no alerts are triggered.",
+        help=(
+            "When provided with --baseline, overwrite the baseline file if no alerts are triggered."
+        ),
     )
     parser.add_argument(
         "--alerts-output",
@@ -294,8 +302,12 @@ def main() -> int:
     args = parse_args()
     policy = load_policy(Path(args.policy))
     tasks = load_tasks(Path("tasks"))
-    traces_dir = Path(args.traces)
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+    run_root = Path(".usb-agents") / "runs" / timestamp
+    traces_dir = run_root / "traces" if args.traces == "traces" else Path(args.traces)
+    artifacts_dir = run_root / "artifacts"
     traces_dir.mkdir(parents=True, exist_ok=True)
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
 
     csv_rows: List[RunResult] = []
     normalised: List[Dict] = []
@@ -323,7 +335,9 @@ def main() -> int:
         base_url = args.http_url if transport_mode == "http" else None
         if transport_mode == "http" and spawn_server:
             base_url = f"http://{args.server_host}:{args.server_port}"
-            server_process = start_http_server(Path(args.policy), args.server_host, args.server_port)
+            server_process = start_http_server(
+                Path(args.policy), args.server_host, args.server_port
+            )
             try:
                 wait_for_server(base_url)
             except Exception as exc:
@@ -369,6 +383,7 @@ def main() -> int:
                         owns_tool_client=shared_tool_client is None,
                         loop=shared_loop,
                         owns_loop=shared_loop is None,
+                        artifacts_dir=artifacts_dir,
                     )
                 except NotImplementedError as exc:
                     sys.stderr.write(f"Skipping transport '{transport_mode}': {exc}\n")
@@ -483,7 +498,7 @@ def main() -> int:
     if args.archive_dir:
         archive_dir = Path(args.archive_dir)
         archive_dir.mkdir(parents=True, exist_ok=True)
-        timestamp = datetime.now(UTC).strftime("%Y%m%d-%H%M%S")
+        timestamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
         archive_path = archive_dir / f"{timestamp}-transport_metrics.json"
         archive_path.write_text(json.dumps(transport_payload, indent=2), encoding="utf-8")
         if not args.skip_dashboard:
@@ -501,7 +516,9 @@ def main() -> int:
         else:
             baseline_path.parent.mkdir(parents=True, exist_ok=True)
             baseline_path.write_text(json.dumps(transport_payload, indent=2), encoding="utf-8")
-    if args.fail_on_alert and (latency_alerts or success_alerts or baseline_alerts or stdio_wait_alerts):
+    if args.fail_on_alert and (
+        latency_alerts or success_alerts or baseline_alerts or stdio_wait_alerts
+    ):
         return 2
     return 0
 

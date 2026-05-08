@@ -5,12 +5,14 @@ from eval.metrics import (
     compute_latency_alerts,
     compute_metrics_by_transport,
     compute_portability,
-    compute_success_alerts,
     compute_stdio_wait_alerts,
+    compute_success_alerts,
 )
 
 
-def make_row(transport: str, latency: float, success: bool = True, task_id: str = "t1_repo_triage") -> dict:
+def make_row(
+    transport: str, latency: float, success: bool = True, task_id: str = "t1_repo_triage"
+) -> dict:
     return {
         "runtime": f"runtime_{transport}",
         "task_id": task_id,
@@ -134,20 +136,8 @@ def test_compare_to_baseline_flags_regressions():
 
 
 def test_compute_stdio_wait_alerts():
-    transports = {
-        "stdio": {
-            "stdio_pool": {
-                "wait_ms": {"p95": 120.0}
-            }
-        }
-    }
-    baseline = {
-        "stdio": {
-            "stdio_pool": {
-                "wait_ms": {"p95": 110.0}
-            }
-        }
-    }
+    transports = {"stdio": {"stdio_pool": {"wait_ms": {"p95": 120.0}}}}
+    baseline = {"stdio": {"stdio_pool": {"wait_ms": {"p95": 110.0}}}}
     alerts = compute_stdio_wait_alerts(transports, threshold_ms=100.0, baseline=baseline)
     assert alerts == [
         {
@@ -160,20 +150,8 @@ def test_compute_stdio_wait_alerts():
 
 
 def test_compute_stdio_wait_alerts_triggers_on_regression_without_threshold_breach():
-    transports = {
-        "stdio": {
-            "stdio_pool": {
-                "wait_ms": {"p95": 80.0}
-            }
-        }
-    }
-    baseline = {
-        "stdio": {
-            "stdio_pool": {
-                "wait_ms": {"p95": 60.0}
-            }
-        }
-    }
+    transports = {"stdio": {"stdio_pool": {"wait_ms": {"p95": 80.0}}}}
+    baseline = {"stdio": {"stdio_pool": {"wait_ms": {"p95": 60.0}}}}
     alerts = compute_stdio_wait_alerts(transports, threshold_ms=100.0, baseline=baseline)
     assert alerts == [
         {

@@ -13,6 +13,9 @@ from typing import Dict, List, Optional
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
 
 from eval.metrics import (
     MetricsBundle,
@@ -20,8 +23,8 @@ from eval.metrics import (
     compute_latency_alerts,
     compute_metrics,
     compute_metrics_by_transport,
-    compute_success_alerts,
     compute_stdio_wait_alerts,
+    compute_success_alerts,
 )
 
 
@@ -64,9 +67,9 @@ def render_markdown(
         failures = len(rows) - successes
         median_latency = compute_metrics(rows).latency_p50
         transports = {row["transport"] for row in rows}
-        lines.append(
-            f"| {runtime} | {successes} | {failures} | {median_latency:.1f} | {','.join(sorted(transports))} |"
-        )
+        transport_label = ",".join(sorted(transports))
+        row = f"| {runtime} | {successes} | {failures} | {median_latency:.1f} | {transport_label} |"
+        lines.append(row)
     if metrics.failure_histogram:
         lines.append("")
         lines.append("## Failures")
@@ -74,7 +77,8 @@ def render_markdown(
             lines.append(f"- {category}: {count}")
     transport_metrics = compute_metrics_by_transport(results)
     has_stdio = bool(transport_meta) and any(
-        isinstance((transport_meta or {}).get(t, {}).get("stdio_pool"), dict) for t in transport_metrics
+        isinstance((transport_meta or {}).get(t, {}).get("stdio_pool"), dict)
+        for t in transport_metrics
     )
     has_baseline = bool(baseline_transports) and any(
         isinstance((baseline_transports or {}).get(t), dict) for t in transport_metrics
@@ -99,7 +103,11 @@ def render_markdown(
                 f"{tm.latency_p95:.1f}",
             ]
             if has_stdio:
-                pool = (transport_meta or {}).get(transport, {}).get("stdio_pool") if transport_meta else None
+                pool = (
+                    (transport_meta or {}).get(transport, {}).get("stdio_pool")
+                    if transport_meta
+                    else None
+                )
                 if isinstance(pool, dict):
                     wait_p95 = pool.get("wait_ms", {}).get("p95", 0.0)
                     concurrency = pool.get("concurrency", 0)
@@ -107,7 +115,9 @@ def render_markdown(
                 else:
                     row_cells.extend(["-", "-"])
             if has_baseline:
-                base_metrics = (baseline_transports or {}).get(transport) if baseline_transports else None
+                base_metrics = (
+                    (baseline_transports or {}).get(transport) if baseline_transports else None
+                )
                 delta_latency = delta_success = None
                 if isinstance(base_metrics, dict):
                     base_latency = base_metrics.get("latency_p95")
@@ -132,39 +142,55 @@ def render_markdown(
         lines.append("")
         lines.append("## Latency Alerts")
         for alert in latency_alerts:
-            lines.append(
-                f"- {alert['transport']}: p95={alert['latency_p95']:.1f} ms exceeded threshold {alert['threshold_ms']:.1f} ms"
+            message = (
+                f"- {alert['transport']}: p95={alert['latency_p95']:.1f} ms "
+                f"exceeded threshold {alert['threshold_ms']:.1f} ms"
             )
+            lines.append(message)
     if success_alerts:
         lines.append("")
         lines.append("## Success Alerts")
         for alert in success_alerts:
-            lines.append(
-                f"- {alert['transport']}: success rate={alert['success_rate']:.2%} below threshold {alert['threshold']:.0%}"
+            message = (
+                f"- {alert['transport']}: success rate={alert['success_rate']:.2%} "
+                f"below threshold {alert['threshold']:.0%}"
             )
+            lines.append(message)
     if stdio_wait_alerts:
         lines.append("")
         lines.append("## Stdio Wait Alerts")
         for alert in stdio_wait_alerts:
-            lines.append(
-                f"- {alert['transport']}: wait p95={alert['wait_p95']:.1f} ms exceeded threshold {alert['threshold_ms']:.1f} ms"
+            message = (
+                f"- {alert['transport']}: wait p95={alert['wait_p95']:.1f} ms "
+                f"exceeded threshold {alert['threshold_ms']:.1f} ms"
             )
+            lines.append(message)
     if baseline_alerts:
         lines.append("")
         lines.append("## Baseline Alerts")
         for alert in baseline_alerts:
             if "latency_p95_delta" in alert:
-                lines.append(
-                    f"- {alert['transport']}: p95 delta={alert['latency_p95_delta']:.1f} ms (limit {alert['max_latency_delta']:.1f} ms)"
+                message = (
+                    f"- {alert['transport']}: p95 delta="
+                    f"{alert['latency_p95_delta']:.1f} ms "
+                    f"(limit {alert['max_latency_delta']:.1f} ms)"
                 )
+                lines.append(message)
             if "success_rate_delta" in alert:
-                lines.append(
-                    f"- {alert['transport']}: success delta={alert['success_rate_delta']:.2%} (limit {alert['max_success_delta']:.2%})"
+                message = (
+                    f"- {alert['transport']}: success delta="
+                    f"{alert['success_rate_delta']:.2%} "
+                    f"(limit {alert['max_success_delta']:.2%})"
                 )
+                lines.append(message)
     lines.append("")
     lines.append("## Sample Rows")
     for row in results[:5]:
-        lines.append(f"- {row['runtime']} {row['task_id']} success={row['success']} latency={row['latency_ms']:.1f}ms")
+        message = (
+            f"- {row['runtime']} {row['task_id']} success={row['success']} "
+            f"latency={row['latency_ms']:.1f}ms"
+        )
+        lines.append(message)
     return "\n".join(lines) + "\n"
 
 
@@ -210,7 +236,9 @@ def main() -> int:
     parser.add_argument(
         "--transport-json",
         type=Path,
-        help="Optional transport_metrics.json to supply transport metadata (e.g., stdio pool stats).",
+        help=(
+            "Optional transport_metrics.json to supply transport metadata (e.g., stdio pool stats)."
+        ),
     )
     parser.add_argument(
         "--stdio-wait-threshold-ms",
@@ -224,21 +252,23 @@ def main() -> int:
     # Convert JSON columns back to python objects for metrics computation.
     normalised = []
     for row in rows:
-        normalised.append({
-            "runtime": row["runtime"],
-            "task_id": row["task_id"],
-            "policy_mode": row["policy_mode"],
-            "success": row["success"].lower() == "true",
-            "latency_ms": float(row["latency_ms"]),
-            "tokens_prompt": int(row["tokens_prompt"]),
-            "tokens_completion": int(row["tokens_completion"]),
-            "tool_calls": int(row["tool_calls"]),
-            "approvals": row["approvals"],
-            "failure_category": row.get("failure_category") or None,
-            "trace_completeness": float(row.get("trace_completeness", 0) or 0),
-            "transport": row.get("transport", "http"),
-            "metadata": row.get("metadata", "{}"),
-        })
+        normalised.append(
+            {
+                "runtime": row["runtime"],
+                "task_id": row["task_id"],
+                "policy_mode": row["policy_mode"],
+                "success": row["success"].lower() == "true",
+                "latency_ms": float(row["latency_ms"]),
+                "tokens_prompt": int(row["tokens_prompt"]),
+                "tokens_completion": int(row["tokens_completion"]),
+                "tool_calls": int(row["tool_calls"]),
+                "approvals": row["approvals"],
+                "failure_category": row.get("failure_category") or None,
+                "trace_completeness": float(row.get("trace_completeness", 0) or 0),
+                "transport": row.get("transport", "http"),
+                "metadata": row.get("metadata", "{}"),
+            }
+        )
     metrics = compute_metrics(normalised)
     transport_metrics = compute_metrics_by_transport(normalised)
     latency_alerts = compute_latency_alerts(transport_metrics, args.latency_threshold_ms)

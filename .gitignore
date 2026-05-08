@@ -9,14 +9,25 @@ htmlcov/
 .ruff_cache/
 .python-version
 .venv/
+*.egg-info/
+build/
+dist/
 
 # tooling
-uv.lock
 .idea/
 .vscode/
 .DS_Store
+.playwright-mcp/
+node_modules/
+*.tsbuildinfo
+apps/web/.next/
+apps/web/test-results/
+apps/web/playwright-report/
+apps/web/.vercel/
 
 # project artifacts
+.usb-agents/
+metrics_archive/
 traces/
 results.csv
 results.md
@@ -27,4 +38,5 @@ alerts_summary.md
 *.otlp
 *.ndjson
 tasks/artifacts/*.actual.json
+usb-agents-console.png
 .env

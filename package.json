@@ -1,0 +1,16 @@
+{
+  "name": "usb-agents-workspace",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "verify": "uv run ruff check . && uv run mypy . && uv run pytest -q && pnpm lint && pnpm --filter @usb-agents/web build && pnpm verify:visual",
+    "verify:release": "pnpm verify && pnpm verify:package && pnpm verify:conformance && uv run usb-agents sdk-smoke && uv run usb-agents golden-demo --transport embedded >/tmp/usb-agents-golden-demo.json",
+    "lint": "pnpm --filter @usb-agents/web lint",
+    "test": "pnpm --filter @usb-agents/web test",
+    "verify:visual": "pnpm --filter @usb-agents/web test",
+    "verify:package": "uv build",
+    "verify:conformance": "uv run usb-agents conformance",
+    "dev:web": "pnpm --filter @usb-agents/web dev"
+  },
+  "devDependencies": {}
+}

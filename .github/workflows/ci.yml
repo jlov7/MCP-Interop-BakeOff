@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: uv sync --all-extras
+
+      - name: Python lint
+        run: uv run ruff check .
+
+      - name: Python types
+        run: uv run mypy .
+
+      - name: Python tests
+        run: uv run pytest -q
+
+      - name: Python package build
+        run: uv build
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm --filter @usb-agents/web exec playwright install --with-deps chromium
+
+      - name: Frontend lint
+        run: pnpm lint
+
+      - name: Frontend build
+        run: pnpm --filter @usb-agents/web build
+
+      - name: Visual verification
+        run: pnpm verify:visual
+
+      - name: MCP conformance smoke
+        run: pnpm verify:conformance
+
+      - name: CLI sample run
+        run: uv run usb-agents run --transport embedded >/tmp/usb-agents-run.json
+
+      - name: Vendor SDK readiness smoke
+        run: uv run usb-agents sdk-smoke

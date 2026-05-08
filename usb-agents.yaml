@@ -1,0 +1,18 @@
+suite_path: tasks
+policy_path: mcp-server/policy.yaml
+default_transports:
+  - embedded
+run_timeout_seconds: 120
+task_timeout_seconds: 30
+network_allowlist:
+  - https://example.com/synthetic-dataset
+runtimes:
+  - id: openai_agents
+    mode: simulator
+    enabled: true
+  - id: microsoft_agent_framework
+    mode: simulator
+    enabled: true
+  - id: mistral_agents
+    mode: simulator
+    enabled: true

@@ -16,16 +16,23 @@ The `policy.yaml` file configures the approval mode per tool (`never`, `always`,
 ## Running
 
 ```bash
-python -m mcp_server.server --transport http --host 0.0.0.0 --port 8000
+uv run python -m mcp_server.server --transport http --host 127.0.0.1 --port 8000
 ```
 
 or stdio:
 
 ```bash
-python -m mcp_server.server --transport stdio
+uv run python -m mcp_server.server --transport stdio
 ```
 
-Both transports expose the same tool schemas. HTTP surfaces `GET /health` for readiness checks and accepts `POST /tools/<name>` with body:
+Both transports expose the same tool schemas. HTTP surfaces `GET /health` for readiness checks and
+accepts MCP JSON-RPC at `POST /mcp`:
+
+```json
+{"jsonrpc":"2.0","id":"1","method":"tools/list","params":{}}
+```
+
+The legacy local harness endpoint `POST /tools/<name>` remains available with body:
 
 ```json
 {

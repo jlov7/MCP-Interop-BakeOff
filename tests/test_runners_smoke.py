@@ -1,18 +1,17 @@
 import json
+import shlex
 import socket
 import subprocess
 import sys
 from pathlib import Path
 
-from scripts.run_matrix import start_http_server, wait_for_server
-from scripts.trace_summary import analyse_trace
-
 from runners.mistral_runner import MistralRunner
 from runners.ms_runner import MicrosoftRunner
 from runners.openai_runner import OpenAIRunner
+from scripts.run_matrix import start_http_server, wait_for_server
+from scripts.trace_summary import analyse_trace
 from usb_agents.policy import load_policy
 from usb_agents.tasks import TaskSpec
-
 
 TASK_PATH = Path("tasks/t1_repo_triage.yaml")
 
@@ -26,7 +25,9 @@ def test_openai_runner_smoke(tmp_path):
     runner = OpenAIRunner(policy, tmp_path)
     result = runner.run_task(load_task())
     assert result.success
-    expected = json.loads(Path("tasks/artifacts/t1_repo_triage_expected.json").read_text(encoding="utf-8"))
+    expected = json.loads(
+        Path("tasks/artifacts/t1_repo_triage_expected.json").read_text(encoding="utf-8")
+    )
     assert result.metadata["output"] == expected
     assert "tool_metrics" in result.metadata
     fs_metrics = result.metadata["tool_metrics"]["fs_read"]
@@ -98,7 +99,8 @@ def test_trace_completeness_embedded(tmp_path):
 def test_stdio_transport_smoke(tmp_path):
     policy = load_policy(Path("mcp-server/policy.yaml"))
     cmd = (
-        f"{sys.executable} -m mcp_server.server --transport stdio --policy mcp-server/policy.yaml"
+        f"{shlex.quote(sys.executable)} -m mcp_server.server "
+        "--transport stdio --policy mcp-server/policy.yaml"
     )
     runner = OpenAIRunner(policy, tmp_path, transport_mode="stdio", stdio_cmd=cmd)
     result = runner.run_task(load_task())

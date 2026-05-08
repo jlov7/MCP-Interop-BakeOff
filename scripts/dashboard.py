@@ -6,7 +6,7 @@ import argparse
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 
 @dataclass
@@ -61,12 +61,21 @@ def build_summary(directory: Path) -> Dict[str, List[TransportSnapshot]]:
     return summary
 
 
-def render_markdown(summary: Dict[str, List[TransportSnapshot]], baseline: Optional[Dict[str, dict]]) -> str:
+def render_markdown(
+    summary: Dict[str, List[TransportSnapshot]], baseline: Optional[Dict[str, dict]]
+) -> str:
     lines: List[str] = ["# Transport Metrics Dashboard", ""]
     for transport in sorted(summary.keys()):
         lines.append(f"## {transport}")
         has_baseline = bool(baseline and transport in baseline)
-        header = ["Run", "Latency p95 (ms)", "Success", "Stdio Wait p95 (ms)", "Concurrency", "Alerts"]
+        header = [
+            "Run",
+            "Latency p95 (ms)",
+            "Success",
+            "Stdio Wait p95 (ms)",
+            "Concurrency",
+            "Alerts",
+        ]
         if has_baseline:
             header.extend(["Δ Latency p95", "Δ Success"])
         lines.append("| " + " | ".join(header) + " |")
@@ -111,12 +120,17 @@ def build_json(
                 "concurrency": snapshot.concurrency,
                 "delta_latency_p95": (
                     snapshot.latency_p95 - baseline.get(transport, {}).get("latency_p95")
-                    if baseline and transport in baseline and baseline[transport].get("latency_p95") is not None
+                    if baseline
+                    and transport in baseline
+                    and baseline[transport].get("latency_p95") is not None
                     else None
                 ),
                 "delta_success": (
-                    snapshot.success_rate - baseline.get(transport, {}).get("portability_success_rate")
-                    if baseline and transport in baseline and baseline[transport].get("portability_success_rate") is not None
+                    snapshot.success_rate
+                    - baseline.get(transport, {}).get("portability_success_rate")
+                    if baseline
+                    and transport in baseline
+                    and baseline[transport].get("portability_success_rate") is not None
                     else None
                 ),
                 "alerts": snapshot.alerts,
@@ -129,8 +143,12 @@ def build_json(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate transport metrics dashboard.")
-    parser.add_argument("directory", type=Path, help="Directory containing transport_metrics.json files.")
-    parser.add_argument("--baseline", type=Path, help="Optional baseline transport_metrics.json for deltas.")
+    parser.add_argument(
+        "directory", type=Path, help="Directory containing transport_metrics.json files."
+    )
+    parser.add_argument(
+        "--baseline", type=Path, help="Optional baseline transport_metrics.json for deltas."
+    )
     parser.add_argument("--output", type=Path, default=Path("dashboard.md"))
     parser.add_argument("--json-output", type=Path, default=Path("dashboard.json"))
     args = parser.parse_args()

@@ -11,6 +11,9 @@ from typing import Dict, Iterable, List
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
 
 from usb_agents.runner_base import REQUIRED_SPANS
 
@@ -57,7 +60,11 @@ def analyse_trace(path: Path) -> Dict[str, object]:
 def render_summary(traces: Iterable[Dict[str, object]]) -> str:
     lines = []
     for trace in traces:
-        lines.append(f"- {trace['file']}: spans={trace['span_count']} completeness={trace['completeness']:.2f}")
+        message = (
+            f"- {trace['file']}: spans={trace['span_count']} "
+            f"completeness={trace['completeness']:.2f}"
+        )
+        lines.append(message)
         missing = trace["missing"]
         if missing:
             lines.append(f"  missing: {', '.join(missing)}")

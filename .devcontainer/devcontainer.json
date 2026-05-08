@@ -1,13 +1,16 @@
 {
   "name": "usb-agents",
-  "image": "mcr.microsoft.com/devcontainers/python:3.11-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/python:1": {
       "installJupyterlab": "false",
-      "version": "3.11"
+      "version": "3.12"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
     }
   },
-  "postCreateCommand": "pip install uv && uv sync",
+  "postCreateCommand": "pip install uv && corepack enable pnpm && uv sync --all-extras && pnpm install",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -19,7 +22,7 @@
     }
   },
   "mounts": [
-    "source=${localWorkspaceFolder}/traces,target=/workspaces/usb-agents/traces,type=bind,consistency=cached"
+    "source=${localWorkspaceFolder}/.usb-agents,target=/workspaces/usb-agents/.usb-agents,type=bind,consistency=cached"
   ],
   "remoteEnv": {
     "OTEL_EXPORTER_OTLP_ENDPOINT": "http://otel-collector:4317"
