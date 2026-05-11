@@ -19,6 +19,7 @@ dist/
 .DS_Store
 .playwright-mcp/
 node_modules/
+.pnpm-store/
 *.tsbuildinfo
 apps/web/.next/
 apps/web/test-results/
