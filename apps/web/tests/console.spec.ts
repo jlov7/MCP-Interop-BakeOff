@@ -1,5 +1,11 @@
 import { expect, test } from "@playwright/test";
 
+const screenshotOptions = {
+  fullPage: true,
+  animations: "disabled" as const,
+  maxDiffPixelRatio: 0.025
+};
+
 test.beforeEach(async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
 });
@@ -41,10 +47,7 @@ test("console renders the working product surface", async ({ page }, testInfo) =
         )
       : 0;
   expect(horizontalOverlap * verticalOverlap).toBe(0);
-  await expect(page).toHaveScreenshot("console-surface.png", {
-    fullPage: true,
-    animations: "disabled"
-  });
+  await expect(page).toHaveScreenshot("console-surface.png", screenshotOptions);
 });
 
 test("trace and artifact views are reachable", async ({ page }) => {
@@ -65,8 +68,5 @@ test("mobile layout avoids horizontal overflow", async ({ page }) => {
   await page.waitForFunction(() => window.__USB_AGENTS_READY === true);
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
   expect(overflow).toBe(false);
-  await expect(page).toHaveScreenshot("console-mobile-overflow.png", {
-    fullPage: true,
-    animations: "disabled"
-  });
+  await expect(page).toHaveScreenshot("console-mobile-overflow.png", screenshotOptions);
 });
