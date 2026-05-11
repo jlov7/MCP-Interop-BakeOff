@@ -4,13 +4,13 @@ export default defineConfig({
   testDir: "./tests",
   outputDir: "./test-results",
   webServer: {
-    command: "pnpm dev --port 3000",
-    url: "http://127.0.0.1:3000",
-    reuseExistingServer: true,
+    command: "pnpm build && pnpm start --hostname 127.0.0.1 --port 3217",
+    url: "http://127.0.0.1:3217",
+    reuseExistingServer: false,
     timeout: 120_000
   },
   use: {
-    baseURL: "http://127.0.0.1:3000",
+    baseURL: "http://127.0.0.1:3217",
     trace: "on-first-retry"
   },
   projects: [

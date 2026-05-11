@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1",
     "build": "next build",
+    "start": "next start",
     "lint": "tsc --noEmit",
     "test": "playwright test"
   },
