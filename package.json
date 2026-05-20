@@ -12,5 +12,11 @@
     "verify:conformance": "uv run usb-agents conformance",
     "dev:web": "pnpm --filter @usb-agents/web dev"
   },
+  "pnpm": {
+    "overrides": {
+      "next>postcss": "8.5.14",
+      "postcss@<8.5.10": "8.5.14"
+    }
+  },
   "devDependencies": {}
 }
