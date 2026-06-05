@@ -41,3 +41,5 @@ alerts_summary.md
 tasks/artifacts/*.actual.json
 usb-agents-console.png
 .env
+
+.specstory/
